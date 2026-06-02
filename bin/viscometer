@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+import os
+from argparse import ArgumentParser
+
+from viscometer import process_folder
+
+if __name__ == "__main__":
+    ap = ArgumentParser(
+        description="Master's thesis Stokes' viscometer data analysis tool"
+    )
+
+    ap.add_argument(
+        "-f",
+        "--file",
+        action="store",
+        required=True,
+        help="Folder containing input images",
+    )
+    ap.add_argument(
+        "-o",
+        "--output",
+        action="store",
+        required=True,
+        help="Destination folder for output",
+    )
+    ap.add_argument(
+        "-s",
+        "--scale",
+        action="store",
+        required=False,
+        help="""Scale factor for image processing, either as pixels per length
+         (> 0), or length per pixel (< 0).""",
+    )
+
+    args = ap.parse_args()
+
+    if os.path.isdir(args.file):
+        process_folder(args.file, args.output)
+    else:
+        raise ValueError("Input must be a directory")
