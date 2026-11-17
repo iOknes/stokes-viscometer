@@ -1,3 +1,19 @@
+[project]
+name = "viscometer"
+version = "0.1.0"
+description = "A software package for calculating Stokes' viscometer data"
+readme = "README.md"
+authors = [
+    { name = "Iver Oknes", email = "iver@oknes.no" }
+]
+requires-python = ">=3.14"
+dependencies = ["opencv-python", "numpy", "matplotlib"]
+
+[project.scripts]
+stokes-viscometer = "viscometer:main.main"
+plot-mag = "viscometer:utils.plot_magnitudes_sh"
+plot-darkest = "viscometer:plot_darkest.main"
+
 [build-system]
-requires = ["setuptools >= 77.0.3"]
-build-backend = "setuptools.build_meta"
+requires = ["uv_build>=0.12.3,<0.13.0"]
+build-backend = "uv_build"
