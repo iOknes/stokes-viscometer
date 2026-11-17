@@ -11,15 +11,6 @@ def main():
 
     ap.add_argument("input_path", help="Folder containing input images")
     ap.add_argument("output_folder", default=".", help="Destination folder for output")
-    # ap.add_argument(
-    #     "-s",
-    #     "--scale",
-    #     required=False,
-    #     help="""Scale factor for image processing, either as pixels per length
-    #      (> 0), or length per pixel (< 0).""",
-    # )
-    # ap.add_argument("-p", "--plot", help="Output plots as PNG files")
-    # ap.add_argument("-c", "--csv", help="Output CSV files")
     ap.add_argument("-s", "--show-plot", default="True", type=bool, help="Display Matplotlib plot as interactive window")
 
     args = ap.parse_args()
