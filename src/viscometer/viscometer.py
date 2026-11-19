@@ -63,9 +63,11 @@ def process_folder(image_folder_path: str, output_path: str, dt: float = 6.45, s
     time_series = np.cumsum(time_series)
     time_series[0] = 0
 
-    plt.plot(time_series, velocity)
+    plt.plot(time_series, velocity, label="Vel")
     plt.xlabel("Time [ms]")
     plt.ylabel("Velocity [px/ms]")
     plt.savefig(os.path.join(output_path, "velocity.png"))
+    plt.legend()
+    plt.grid()
     if show_plot:
         plt.show()
