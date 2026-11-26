@@ -31,7 +31,8 @@ def find_center(image: np.ndarray):
     return np.average(np.where(image == np.min(image)), axis=1)
 
 
-def process_folder(image_folder_path: str, output_path: str, dt: float = 6.45, show_plot=False):
+def process_folder(image_folder_path: str, output_path: str, dt: float, show_plot=False, interval=1):
+    dt *= interval
     images = load_folder(image_folder_path)
 
     mean_img = np.mean(images, axis=0)
@@ -40,8 +41,9 @@ def process_folder(image_folder_path: str, output_path: str, dt: float = 6.45, s
     centers = np.array([find_center(diff) for diff in diffs])
 
     # For x-direction only
-    # velocity = np.diff(centers[:, 0]) / dt
-    velocity = np.sum(np.diff(centers, axis=0)**2, axis=1)
+    velocity = np.diff(centers[::interval, 0]) / dt
+    # For norm of velocity (x & y)
+    # velocity = np.sum(np.diff(centers, axis=0)**2, axis=1)
 
     if not os.path.exists(output_path):
         os.makedirs(output_path)
@@ -49,7 +51,7 @@ def process_folder(image_folder_path: str, output_path: str, dt: float = 6.45, s
     # Write statistics to a file
     with open(os.path.join(output_path, "stats.txt"), 'w') as outfile:
         outfile.write(f"Average velocity: {np.average(velocity):.3f}\n")
-        outfile.write(f"Average velocity for second half: {np.average(velocity[len(velocity)//2:]):.3f}\n")
+        outfile.write(f"Average velocity for second half ({len(velocity)//2}:{len(velocity)}): {np.average(velocity[len(velocity)//2:]):.3f}\n")
 
     # Create image with particle tracking points
     track_img = images[0].copy()
@@ -64,10 +66,11 @@ def process_folder(image_folder_path: str, output_path: str, dt: float = 6.45, s
     time_series[0] = 0
 
     plt.plot(time_series, velocity, label="Vel")
+    plt.title(f"Velocity (i:{interval})")
     plt.xlabel("Time [ms]")
     plt.ylabel("Velocity [px/ms]")
     plt.savefig(os.path.join(output_path, "velocity.png"), dpi=300)
-    plt.legend()
+    # plt.legend()
     plt.grid()
     if show_plot:
         plt.show()

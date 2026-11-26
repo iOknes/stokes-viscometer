@@ -13,7 +13,23 @@ dependencies = ["opencv-python", "numpy", "matplotlib"]
 stokes-viscometer = "viscometer:main.main"
 plot-mag = "viscometer:utils.plot_magnitudes_sh"
 plot-darkest = "viscometer:plot_darkest.main"
+viscometer-plots = "viscometer:main.plot_data"
 
 [build-system]
-requires = ["uv_build>=0.12.3,<0.13.0"]
+requires = ["uv_build>=0.12.3,<0.14.0"]
 build-backend = "uv_build"
+
+[tool.uv.workspace]
+members = [
+    ".",
+    ".",
+    ".",
+]
+
+[tool.uv.sources]
+viscometer = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "viscometer",
+]
